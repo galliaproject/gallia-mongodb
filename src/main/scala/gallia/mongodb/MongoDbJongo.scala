@@ -6,7 +6,7 @@ import java.io.Closeable
 import aptus.{Anything_, String_}
 import aptus.{Option_, Tuple2_}
 import aptus.misc.Java
-import aptus.misc.MongoDb
+import gallia.atoms.utils.MongoDb
 
 // ---------------------------------------------------------------------------
 import org.jongo.{Find, Jongo, MongoCollection}
