@@ -5,7 +5,8 @@ import java.io.Closeable
 
 import aptus.{Anything_, String_}
 import aptus.{Option_, Tuple2_}
-import aptus.misc.Java
+import aptus.aptmisc.Java
+
 import gallia.atoms.utils.MongoDb
 
 // ---------------------------------------------------------------------------
@@ -71,7 +72,7 @@ object MongoDbJongo extends MongoDb { import MongoDb._
           .asScala /* JListWrapper */
           .toList
           .map(convertDocValue)
-          .as.noneIf(_.isEmpty)
+          .in.noneIf(_.isEmpty)
 
   // ===========================================================================
   private def find(mongoCollection: MongoCollection, cmd: MongoDbCmd): Find = {
