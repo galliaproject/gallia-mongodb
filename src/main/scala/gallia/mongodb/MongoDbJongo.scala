@@ -1,11 +1,11 @@
-package gallia.mongodb
+package gallia
+package mongodb
 
 import scala.collection.JavaConverters._
 import java.io.Closeable
 
 import aptus.{Anything_, String_}
 import aptus.{Option_, Tuple2_}
-import aptus.aptmisc.Java
 
 import gallia.atoms.utils.MongoDb
 
@@ -52,7 +52,7 @@ object MongoDbJongo extends MongoDb { import MongoDb._
   private def convert(doc: org.bson.Document): List[(Symbol, Any)] =
     doc
       .entrySet()
-      .thn(scala.collection.JavaConverters.asScalaSet)
+      .pipe(scala.collection.JavaConverters.asScalaSet)
       .map { entry =>
         entry.getKey.symbol ->
           convertDocValue(entry.getValue) }
@@ -64,7 +64,10 @@ object MongoDbJongo extends MongoDb { import MongoDb._
         case null                          => None
         case doc  : org.bson.Document      => convert(doc)
         case array: java.util.ArrayList[_] => convertArrayList(array)
-        case basic                         => Java.toScala(basic) }
+        case x    : java.math.BigDecimal   => BigDecimal(x)
+        case x    : java.math.BigInteger   => BigInt    (x)
+        case x    : Array[Byte]            => gallia.byteBuffer(x) // necessary?
+        case basic                         => basic }
 
       // ---------------------------------------------------------------------------
       private def convertArrayList(array: java.util.ArrayList[_]): Option[List[Any]] =
