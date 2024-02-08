@@ -17,7 +17,7 @@ import com.mongodb.{MongoClient, MongoClientURI}
 // TODO: t210114153517 - need jongo until figure out: https://stackoverflow.com/questions/35771369/mongo-java-driver-how-to-create-cursor-in-mongodb-by-cusor-id-returned-by-a-db
 object MongoDbJongo extends MongoDb { import MongoDb._
 
-  def setLogLevel(level: java.util.logging.Level) { // TODO: configurable properly
+  def setLogLevel(level: java.util.logging.Level): Unit = { // TODO: configurable properly
     java.util.logging.Logger
       .getLogger("org.mongodb.driver")
       .setLevel(MongoDb.DefaultLogLevel) }
@@ -45,7 +45,7 @@ object MongoDbJongo extends MongoDb { import MongoDb._
 
     val iter = mongoCursor.iterator.asScala.map(convert)
 
-    (iter, new Closeable { def close() { Seq(mongoCursor, mongoClient).foreach(_.close()) } })
+    (iter, new Closeable { def close(): Unit = { Seq(mongoCursor, mongoClient).foreach(_.close()) } })
   }
 
   // ===========================================================================
